@@ -1,1 +1,14 @@
 name: show git tag diff
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  show-git-tag-diff:
+    runs-on: ubuntu-latest
+    steps:
+      # tagにセマンティックバージョンがある前提。日付でもいいかもしれない。 --sort=-taggerdate 
+      - run: tags=($(git tag --sort=-v:refname | head -n 2))
+      - run: git log --pretty=oneline ${tags[0]}...${tags[1]} | awk '{print $1}'
