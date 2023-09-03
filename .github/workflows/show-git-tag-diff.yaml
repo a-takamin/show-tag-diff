@@ -7,16 +7,16 @@ on:
   workflow_dispatch:
     inputs:
       useTag: 
-        description: 'If True, return the commits b/w latest tag and the latest tag.'
+        description: 'Trueなら1つ前のタグ <= 最新のタグ間のコミットIDを出力'
         type: boolean
         required: true
         default: true
       start:
-        description: 'Input commit hash or tag. Required if useTag is false. '
+        description: 'コミットIDかタグ。start <= end間のコミットIDを出力。useTagがFalseなら必須'
         type: string
         required: false
       end: 
-        description: 'Input commit hash or tag. Required if useTag is false. '
+        description: 'コミットIDかタグ。start <= end間のコミットIDを出力。useTagがFalseなら必須'
         type: string
         required: false
 
