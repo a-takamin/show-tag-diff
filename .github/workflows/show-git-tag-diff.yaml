@@ -28,11 +28,10 @@ jobs:
       #   with:
       #     fetch-depth: 0 # actions/checkout@v3は最新コミットしかcloneしない。
       - name: diff
-        env:
-          TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          USERNAME: ${GITHUB_REPOSITORY%%/*}
-          REPONAME: ${GITHUB_REPOSITORY##*/}
-        run: git ls-remote https://x-access-token:${TOKEN}@github.com/${USERNAME}/${REPONAME}.git
+        run: |
+          USERNAME=${GITHUB_REPOSITORY%%/*}
+          REPONAME=${GITHUB_REPOSITORY##*/}
+          git ls-remote https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${USERNAME}/${REPONAME}.git
 
       # - name: diff
       #   run: |
