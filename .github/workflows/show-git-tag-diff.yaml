@@ -24,7 +24,7 @@ jobs:
   show-git-tag-diff:
     runs-on: ubuntu-latest
     steps:
-      - uses: action/checkout@v3
+      - uses: actions/checkout@v3
       - run: |
           if ${{ inputs.useTag }} ; then
             tags=($(git tag --sort=-taggerdate --sort=-v:refname | head -n 2))
