@@ -12,14 +12,14 @@ on:
         required: true
         default: true
       start:
-        description: 'Required if useTag is false. Use commit hash or tag.'
+        description: 'Input commit hash or tag. Required if useTag is false. '
         type: string
         required: false
       end: 
-        description: 'Required if useTag is false. Use commit hash or tag.'
+        description: 'Input commit hash or tag. Required if useTag is false. '
         type: string
         required: false
-        
+
 jobs:
   show-git-tag-diff:
     runs-on: ubuntu-latest
