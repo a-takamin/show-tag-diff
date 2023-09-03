@@ -28,7 +28,7 @@ jobs:
         run: |
           USERNAME=${GITHUB_REPOSITORY%%/*}
           REPONAME=${GITHUB_REPOSITORY##*/}
-          git ls-remote --tags --sort=-authordate https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${USERNAME}/${REPONAME}.git | awk '{print $2}'
+          git ls-remote --tags https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${USERNAME}/${REPONAME}.git | awk '{print $2}'
 
       # - name: diff
       #   run: |
