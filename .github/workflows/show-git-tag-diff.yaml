@@ -27,7 +27,7 @@ jobs:
       - uses: actions/checkout@v3
       - run: |
           if ${{ inputs.useTag }} ; then
-            tags=($(git tag --sort=-taggerdate --sort=-v:refname | head -n 2))
+            tags=($(git tag --sort -authordate | head -n 2))
             git log --pretty=oneline ${tags[0]}...${tags[1]} | awk '{print $1}'
           else
             git log --pretty=oneline ${{ inputs.start }}...${{ inputs.end }} | awk '{print $1}'
