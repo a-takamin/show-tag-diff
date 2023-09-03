@@ -4,11 +4,32 @@ on:
   push:
     tags:
       - '*'
-
+  workflow_dispatch:
+    inputs:
+      useTag: 
+        description: 'If True, return the commits during the second latest tag and the latest tag.'
+        type: boolean
+        required: true
+        default: true
+      start:
+        description: 'Required if useTag is false. Use commit hash or tag.'
+        type: string
+        required: false
+      end: 
+        description: 'Required if useTag is false. Use commit hash or tag.'
+        type: string
+        required: false
+        
 jobs:
   show-git-tag-diff:
     runs-on: ubuntu-latest
     steps:
-      # tagにセマンティックバージョンがある前提。日付でもいいかもしれない。 --sort=-taggerdate 
-      - run: tags=($(git tag --sort=-v:refname | head -n 2))
-      - run: git log --pretty=oneline ${tags[0]}...${tags[1]} | awk '{print $1}'
+      - uses: action/checkout@v3
+      - run: |
+          if ${{ inputs.useTag }} ; then
+            tags=($(git tag --sort=-taggerdate --sort=-v:refname | head -n 2))
+            git log --pretty=oneline ${tags[0]}...${tags[1]} | awk '{print $1}'
+          else
+            git log --pretty=oneline ${{ inputs.start }}...${{ inputs.end }} | awk '{print $1}'
+          fi
+
