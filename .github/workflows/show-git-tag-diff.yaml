@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       useTag: 
-        description: 'If True, return the commits during the second latest tag and the latest tag.'
+        description: 'If True, return the commits b/w latest tag and the latest tag.'
         type: boolean
         required: true
         default: true
@@ -29,11 +29,12 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if ${{ inputs.useTag }} ; then
-            USERNAME=${GITHUB_REPOSITORY%%/*}
-            REPONAME=${GITHUB_REPOSITORY##*/}
+          USERNAME=${GITHUB_REPOSITORY%%/*}
+          REPONAME=${GITHUB_REPOSITORY##*/}
+          if ${{ inputs.useTag }} ; then          
             tags=($(git ls-remote --tags https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${USERNAME}/${REPONAME}.git | tail -n 2 | awk '{print $2}'))
             gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repos/${USERNAME}/${REPONAME}/compare/${tags[0]}...${tags[1]} | jq '.commits[].sha' | tr -d '"'
+
           else
             gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repos/${USERNAME}/${REPONAME}/compare/${{ inputs.start }}...${{ inputs.end }} | jq '.commits[].sha' | tr -d '"'
           fi
