@@ -25,14 +25,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: diff
-        # 最新のタグ2つの取得はcheckoutしたくないので ls-remote コマンドで頑張る
+        # タグ取得のためにフルクローンしたくないので、タグはls-remote コマンドで頑張る
         run: |
           if ${{ inputs.useTag }} ; then
             USERNAME=${GITHUB_REPOSITORY%%/*}
             REPONAME=${GITHUB_REPOSITORY##*/}
             git ls-remote --tags https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${USERNAME}/${REPONAME}.git | tail -n 2 | awk '{print $2}'
             tags=($(git ls-remote --tags https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${USERNAME}/${REPONAME}.git | tail -n 2 | awk '{print $2}'))
-            git log --pretty=oneline ${tags[0]}...${tags[1]} | awk '{print $1}'
+            gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repos/${USERNAME}/${REPONAME}/compare/${tags[0]}...tags[1]
           else
             git log --pretty=oneline ${{ inputs.start }}...${{ inputs.end }} | awk '{print $1}'
           fi
