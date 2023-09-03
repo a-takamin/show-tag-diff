@@ -24,16 +24,16 @@ jobs:
   show-git-tag-diff:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: diff
-        run: |
-          if ${{ inputs.useTag }} ; then
-            git tag --sort -authordate
-            tags=($(git tag --sort -authordate | head -n 2))
-            echo ${tags[0]}
-            echo ${tags[1]}
-            git log --pretty=oneline ${tags[0]}...${tags[1]} | awk '{print $1}'
-          else
-            git log --pretty=oneline ${{ inputs.start }}...${{ inputs.end }} | awk '{print $1}'
-          fi
+      # - uses: actions/checkout@v3
+      #   with:
+      #     fetch-depth: 0 # actions/checkout@v3は最新コミットしかcloneしない。
+      - run: git ls-remote --tags
+      # - name: diff
+      #   run: |
+      #     if ${{ inputs.useTag }} ; then
+      #       tags=($(git tag --sort=-authordate | head -n 2))
+      #       git log --pretty=oneline ${tags[0]}...${tags[1]} | awk '{print $1}'
+      #     else
+      #       git log --pretty=oneline ${{ inputs.start }}...${{ inputs.end }} | awk '{print $1}'
+      #     fi
 
