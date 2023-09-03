@@ -27,7 +27,12 @@ jobs:
       # - uses: actions/checkout@v3
       #   with:
       #     fetch-depth: 0 # actions/checkout@v3は最新コミットしかcloneしない。
-      - run: git ls-remote --tags
+      - name: diff
+        run: |
+          USERNAME=${GITHUB_REPOSITORY%%/*}
+          REPONAME=${GITHUB_REPOSITORY##*/}
+          git ls-remote https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${USERNAME}/${REPONAME}.git --tag
+
       # - name: diff
       #   run: |
       #     if ${{ inputs.useTag }} ; then
