@@ -31,6 +31,8 @@ jobs:
         run: |
           USERNAME=${GITHUB_REPOSITORY%%/*}
           REPONAME=${GITHUB_REPOSITORY##*/}
+          echo ${USERNAME}
+          echo ${REPONAME}
           git ls-remote https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${USERNAME}/${REPONAME}.git --tag
 
       # - name: diff
