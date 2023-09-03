@@ -24,18 +24,11 @@ jobs:
   show-git-tag-diff:
     runs-on: ubuntu-latest
     steps:
-      # - uses: actions/checkout@v3
-      #   with:
-      #     fetch-depth: 0 # actions/checkout@v3は最新コミットしかcloneしない。
       - name: diff
         run: |
           USERNAME=${GITHUB_REPOSITORY%%/*}
           REPONAME=${GITHUB_REPOSITORY##*/}
-          git ls-remote https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${USERNAME}/${REPONAME}.git
-          echo "---"
-          git ls-remote https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${USERNAME}/${REPONAME}.git --tags
-          echo "---"
-          git ls-remote --tags https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${USERNAME}/${REPONAME}.git
+          git ls-remote --tags --sort=-authordate https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${USERNAME}/${REPONAME}.git | awk '{print $2}'
 
       # - name: diff
       #   run: |
