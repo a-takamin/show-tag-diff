@@ -25,8 +25,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: |
+      - name: diff
+        run: |
           if ${{ inputs.useTag }} ; then
+            git tag --sort -authordate
             tags=($(git tag --sort -authordate | head -n 2))
             echo ${tags[0]}
             echo ${tags[1]}
